@@ -1,0 +1,10 @@
+{
+	"name" :        "project-euler",
+	"description" : "Project Euler Solutions",
+	"targetPath" :  "bin",
+	"postBuildCommands": [
+		"./cp-txt.sh bin"
+	],
+	"dependencies" : {
+	}
+}

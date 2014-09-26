@@ -1,0 +1,319 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'colorize'
+
+$language_params = {
+  d:    {name: "D",       bin: "bin/project-euler"},
+  java: {name: "Java",    bin: "build/install/project-euler/bin/project-euler"},
+  node: {name: "NodeJs", bin: "bin/project-euler"}
+  # c:    {name: "C++",     bin: "Release/project-euler"},
+  # cs:   {name: "C#"},
+  # py:   {name: "Python"}
+}
+
+$solution        = nil
+$languages       = $language_params.keys
+$show_time       = false
+$benchmark       = false
+$benchmark_times = 10
+$all_solutions   = 1..26
+
+###################################################################################################
+# Parse command line options
+#
+$opt_prs = OptionParser.new do |opts|
+  langs_param = $language_params.keys.join("|")
+  opts.banner = "Usage: " + "project-euler <solution>|all [--language <#{langs_param}>] [--output-time]\n".green.bold +
+                "       project-euler <solution>|all [--language <#{langs_param}>] [--benchmark] [--times <n>]".green.bold
+
+  langs_param_desc = $language_params.map{|k,v| "#{v[:name]}(\"#{k}\")"}.join(", ")
+  opts.on("-l", "--language LANG", "Limit to this language (#{langs_param_desc})") do |v|
+    lang_key = v.to_sym
+    raise "Unknown language" if $language_params[lang_key].nil?
+    $languages = [lang_key]
+  end
+
+  opts.on("-t", "--output-time", "Show execution time") do |v|
+    $show_time = true
+  end
+
+  opts.on("-b", "--benchmark", "Benchmark solution") do |v|
+    $benchmark = true
+  end
+
+  opts.on("-n", "--times TIMES", OptionParser::DecimalInteger, "If benchmarking, number of times to run solution") do |v|
+    $benchmark_times = v
+  end
+end
+
+def usage(msg = nil)
+  puts msg.red.bold unless msg.nil?
+  puts $opt_prs.help
+  exit  
+end
+
+begin
+  $opt_prs.parse!
+rescue SystemExit
+  raise
+rescue Exception => e
+  usage e.to_s
+end
+
+usage if ARGV.empty?
+usage("Too many options") if ARGV.length > 1
+usage("Invalid solution") unless ARGV[0] =~ /^\d+|all$/
+
+$solution = ARGV[0] == 'all' ? :all : ARGV[0].to_i
+
+###################################################################################################
+# Execute
+#
+
+def lang_name(lang)
+  $language_params[lang][:name]
+end
+
+def run_single_language_single_solution()
+  begin
+    puts "Running solution #{$solution} in #{lang_name($languages[0])}".green.bold
+    result = run_solution $solution, $languages[0]
+    puts result[:result]
+    puts result[:time].yellow.bold unless result[:time].nil?
+  rescue Exception => e    
+    puts e.to_s.red.bold
+  end  
+end
+
+def benchmark_single_language_single_solution()
+  begin
+    puts "Benchmarking solution #{$solution} in #{lang_name($languages[0])}".green.bold
+    result = benchmark_solution $solution, $languages[0]
+    puts result.yellow.bold
+  rescue Exception => e    
+    puts e.to_s.red.bold
+  end  
+end
+
+def run_single_language_all_solutions()
+  puts "Running all solutions in #{lang_name($languages[0])}".green.bold
+  sep_sizes = [5, 14]
+  sep_sizes.push 8 if $show_time
+  sep :top, sep_sizes
+  for num in $all_solutions
+    print "│ #{num.to_s.ljust(3)} │ "
+    begin
+      result = run_solution num, $languages[0]
+      print result[:result].ljust(12), " │"
+      print " ", result[:time].ljust(6).yellow.bold, " │" if not result[:time].nil?
+    rescue Interrupt
+      puts
+      exit
+    rescue Exception => e
+      print "Error".ljust(12).red.bold, " │"
+      print " ",  "-".ljust(6).red.bold, " │" if $show_time
+    end
+    puts
+  end
+  sep :bottom, sep_sizes
+end
+
+def benchmark_single_language_all_solutions()
+  puts "Benchmarking all solutions in #{lang_name($languages[0])}".green.bold
+  sep_sizes = [5, 8]
+  sep :top, sep_sizes
+  for num in $all_solutions
+    print "│ #{num.to_s.ljust(3)} │ "
+    begin
+      result = benchmark_solution num, $languages[0]
+      print result.ljust(6).yellow.bold, " │"
+    rescue Interrupt
+      puts
+      exit
+    rescue Exception => e
+      print "Error".ljust(6).red.bold, " │"
+    end
+    puts
+  end
+  sep :bottom, sep_sizes
+end
+
+def run_multiple_languages_single_solution()
+  puts "Running solution #{$solution} in multiple languages".green.bold
+  sep_sizes = [8, 14]
+  sep_sizes.push 8 if $show_time
+  sep :top, sep_sizes
+  for lang in $languages
+    print "│ ", lang_name(lang).ljust(6), " │ "
+    begin
+      result = run_solution $solution, lang
+      print result[:result].ljust(12), " │"
+      print " ", result[:time].ljust(6).yellow.bold, " │" if not result[:time].nil?
+    rescue Interrupt
+      puts
+      exit
+    rescue Exception => e
+      print "Error".ljust(12).red.bold, " │"
+      print " -      ".red.bold, "│" if $show_time
+    end
+    puts
+  end
+  sep :bottom, sep_sizes
+end
+
+def benchmark_multiple_languages_single_solution()
+  puts "Benchmarking solution #{$solution} in multiple languages".green.bold
+  sep_sizes = [8, 8]
+  sep :top, sep_sizes
+  for lang in $languages
+    print "│ ", lang_name(lang).ljust(6), " │ "
+    begin
+      result = benchmark_solution $solution, lang
+      print result.ljust(6).yellow.bold, " │"
+    rescue Interrupt
+      puts
+      exit
+    rescue Exception => e
+      print "Error".ljust(6).red.bold, " │"
+    end
+    puts
+  end
+  sep :bottom, sep_sizes
+end
+
+def run_multiple_languages_all_solutions()
+  puts "Running all solutions in multiple languages".green.bold
+  
+  sep :top, [5] + [$show_time ? 23 : 14] * $languages.length
+  
+  print "│     │"
+  for lang in $languages
+    print " ", lang_name(lang).ljust($show_time ? 21 : 12).cyan.bold, " │"
+  end
+  puts
+  
+  sep :center, [5] + ($show_time ? ["v14", 8] : [14]) * $languages.length
+  
+  for num in $all_solutions
+    print "│ #{num.to_s.ljust(3)} │"
+    for lang in $languages      
+      begin
+        result = run_solution num, lang
+        print " ", result[:result].ljust(12), " │"
+        print " ", result[:time].ljust(6).yellow.bold, " │" if not result[:time].nil?
+      rescue Interrupt
+        puts
+        exit
+      rescue Exception => e
+        print " ", "Error".ljust(12).red.bold, " │"
+        print " ", "-".ljust(6).red.bold, " │" if $show_time
+      end
+    end
+    puts
+  end
+  sep :bottom, [5] + ($show_time ? [14, 8] : [14]) * $languages.length
+end
+
+def benchmark_multiple_languages_all_solutions()
+  puts "Benchmarking all solutions in multiple languages".green.bold
+  
+  sep_sizes = [5] + [8] * $languages.length
+  sep :top, sep_sizes
+  
+  print "│     │"
+  for lang in $languages
+    print " ", lang_name(lang).ljust(6).cyan.bold, " │"
+  end
+  puts
+  
+  sep :center, sep_sizes
+  
+  for num in $all_solutions
+    print "│ #{num.to_s.ljust(3)} │"
+    for lang in $languages      
+      begin
+        result = benchmark_solution num, lang
+        print " ", result.ljust(6).yellow.bold, " │"
+      rescue Interrupt
+        puts
+        exit
+      rescue Exception => e
+        print " ", "Error".ljust(6).red.bold, " │"
+      end
+    end
+    puts
+  end
+  sep :bottom, sep_sizes
+end
+
+$sep_corners = {
+  top:    {left: "┌", middle: "┬", right: "┐"},
+  center: {left: "├", middle: "┼", right: "┤"},
+  bottom: {left: "└", middle: "┴", right: "┘"}
+}
+
+def sep(type, sizes)
+  print $sep_corners[type][:left]
+  sizes.each_with_index do |size, i|
+    my_type = type
+    if size.is_a? String then
+      case size[0]
+      when "^" then my_type = :bottom
+      when "v" then my_type = :top
+      end
+      size = size[1..-1].to_i
+    end
+    print ("─" * size), i == sizes.length - 1 ? $sep_corners[my_type][:right] : $sep_corners[my_type][:middle]
+  end
+  puts
+end
+
+def run_solution(num, lang)
+  bin = "project-euler.#{lang}/#{$language_params[lang][:bin]}"
+  t = "-t" if $show_time
+  
+  result = %x(#{bin} #{num} #{t})
+  raise result if $? != 0
+  
+  lines = result.split /(?:\r?\n)+/
+  raise "Invalid result (empty)" if lines.empty? || lines[0].empty?
+  raise "Invalid result: #{result.inspect}" if lines[0] !~ /^\d+$/
+  raise "Invalid result: #{result.inspect}" if $show_time && lines.length < 2
+  
+  ret = {result: lines[0]}
+  if $show_time then
+    ret[:time] = format_time(lines[1].to_i)
+  end
+  ret
+end
+
+def benchmark_solution(num, lang)
+  bin = "project-euler.#{lang}/#{$language_params[lang][:bin]}"
+  result = %x(#{bin} #{num} -b -n #{$benchmark_times})
+  raise result if $? != 0
+  
+  result.strip!
+  raise "Invalid result (empty)" if result.empty?
+  raise "Invalid result #{result.inspect}" if result !~ /^\d+$/
+  
+  return format_time(result.to_f / $benchmark_times)
+end
+
+def format_time(msecs)
+  case
+    when msecs < 2000  then return "#{msecs.round(0).to_i}ms"
+    when msecs < 10000 then return "#{(msecs.to_f / 1000).round(2)}s"
+    else                    return "#{(msecs.to_f / 1000).round(1)}s"
+  end
+end
+
+msg = ($benchmark             ? 'benchmark'       : 'run')                + "_" +
+      ($languages.length == 1 ? 'single_language' : 'multiple_languages') + "_" +
+      ($solution == :all      ? 'all_solutions'   : 'single_solution')
+
+begin
+  send msg
+rescue NoMethodError
+  puts "#{msg} not implemented".red.bold
+end

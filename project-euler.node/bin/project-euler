@@ -1,0 +1,42 @@
+#!/usr/bin/env coffee
+require 'sugar'
+getopt    = require 'node-getopt'
+solutions = require 'euler/common/solutions'
+
+optsParser = null;
+
+usage = (msg)->
+  if msg
+    console.log msg
+
+  optsParser.showHelp()
+  process.exit msg ? 1 : 0
+
+try
+  optsParser = new getopt([
+    ['t' , 'show-time', 'Show solution measured time'],
+    ['b' , 'benchmark', 'Benchmark solution by running multiple times'],
+    ['n' , 'times=ARG', 'Number of benchmark runs (defaults to 10)'],
+    ['h' , 'help']
+  ])
+  optsParser.setHelp "Usage: ProjectEuler <solution>|all [--output-time] [--benchmark] [--times=<n>]\n\n[[OPTIONS]]"
+
+  cmdLine = optsParser.parseSystem()
+
+  usage()                          if cmdLine.argv.length == 0
+  usage "Can ony run one solution" if cmdLine.argv.length > 1
+  usage "Invalid solution"         if !cmdLine.argv[0].match(/^\d+$/)
+
+  solution = cmdLine.argv[0]
+
+  if !cmdLine.options['benchmark']
+    solutions.run_solution solution, cmdLine.options['show-time']
+  else
+    solutions.benchmark_solution solution, cmdLine.options['times'] || 10
+
+catch e
+  if e.code == 'SOLUTION_NOT_FOUND'
+    console.log e.message
+  else
+    console.log e.stack
+  process.exit 1

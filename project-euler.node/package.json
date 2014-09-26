@@ -1,0 +1,10 @@
+{
+  "name": "project-euler",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/project-euler"
+  },
+  "dependencies": {
+  }
+}

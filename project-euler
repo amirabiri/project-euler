@@ -4,9 +4,10 @@ require 'optparse'
 require 'colorize'
 
 $language_params = {
-  d:    {name: "D",       bin: "bin/project-euler"},
-  java: {name: "Java",    bin: "build/install/project-euler/bin/project-euler"},
-  node: {name: "NodeJs", bin: "bin/project-euler"}
+  d:    {name: "D",      bin: "bin/project-euler"},
+  java: {name: "Java",   bin: "build/install/project-euler/bin/project-euler"},
+  node: {name: "NodeJs", bin: "bin/project-euler"},
+  go:   {name: "GO",     bin: "bin/project-euler"}
   # c:    {name: "C++",     bin: "Release/project-euler"},
   # cs:   {name: "C#"},
   # py:   {name: "Python"}

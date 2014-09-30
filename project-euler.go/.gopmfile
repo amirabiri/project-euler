@@ -1,0 +1,5 @@
+[target]
+path = project-euler
+
+[deps]
+github.com/jessevdk/go-flags = commit:1f8fc78104c465b25629ed0fa9bbd4dffb39dd8e

@@ -1,14 +1,13 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 import java.math.BigInteger;
 
 public class _25 extends BaseSolution {
 
     @Override
-    public Result solve() {
+    public long solve() {
         BigInteger a = new BigInteger("1"),
                    b = new BigInteger("1");
         long ord = 2;
@@ -23,6 +22,6 @@ public class _25 extends BaseSolution {
             }
         }
 
-        return new Result(ord);
+        return ord;
     }
 }

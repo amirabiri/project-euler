@@ -1,9 +1,6 @@
 package euler.solutions;
 
-import com.google.common.math.IntMath;
 import euler.common.BaseSolution;
-import euler.common.NumberUtils;
-import euler.common.Result;
 import gnu.trove.iterator.TIntIntIterator;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -14,7 +11,7 @@ import static euler.common.NumberUtils.getPrimeFactors;
 public class _5 extends BaseSolution {
 
     @Override
-    public Result solve() {
+    public long solve() {
         TIntIntMap superset = new TIntIntHashMap();
 
         for (int n = 2; n <= 20; n++) {
@@ -39,7 +36,7 @@ public class _5 extends BaseSolution {
             num *= pow(factor, count);
         }
 
-        return new Result(num);
+        return num;
     }
 
     private TIntIntMap reduceToMap(int[] numbers) {

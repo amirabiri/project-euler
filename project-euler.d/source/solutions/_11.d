@@ -13,7 +13,7 @@ mixin prepare_data!(11,
 
 mixin solution!(11,
 {
-	int max;
+	long max;
 	
 	for (int y = 0; y < 20; y++) {
 		for (int x = 0; x < 17; x++) {

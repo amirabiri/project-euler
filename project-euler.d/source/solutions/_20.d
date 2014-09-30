@@ -12,5 +12,5 @@ mixin solution!(20,
 		num *= i;
 	}
 
-	return num.to!string.map!(x => x.to!int - 48).sum;
+	return num.to!string.map!(x => x.to!int - 48).sum.to!long;
 });

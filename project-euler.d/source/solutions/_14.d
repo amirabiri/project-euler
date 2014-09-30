@@ -11,7 +11,8 @@ mixin solution!(14,
 	term_length_cache = [];
 	term_length_cache.length = 1_000_000;
 	
-	int longest, term;
+	int  longest;
+	long term;
 	
 	foreach (n ; iota(1, 1_000_000)) {
 		auto length = term_length(n);

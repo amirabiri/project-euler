@@ -1,7 +1,6 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 import gnu.trove.list.TLongList;
 import gnu.trove.list.array.TLongArrayList;
 
@@ -10,7 +9,7 @@ public class _14 extends BaseSolution {
     int[] termLengthCache;
 
     @Override
-    public Result solve() {
+    public long solve() {
         termLengthCache = new int[1_000_000];
 
         int longest = 0, term = 0;
@@ -23,7 +22,7 @@ public class _14 extends BaseSolution {
             }
         }
 
-        return new Result(term);
+        return term;
     }
 
     int termLength(long number) {

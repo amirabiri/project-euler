@@ -1,7 +1,6 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 import java.util.Arrays;
 
@@ -15,7 +14,7 @@ public class _22 extends BaseSolution {
     }
 
     @Override
-    public Result solve() {
+    public long solve() {
         long total_sum = 0;
         int pos = 1;
 
@@ -27,6 +26,6 @@ public class _22 extends BaseSolution {
             total_sum += charSum * pos++;
         }
 
-        return new Result(total_sum);
+        return total_sum;
     }
 }

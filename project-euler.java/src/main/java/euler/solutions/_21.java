@@ -1,7 +1,6 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -14,7 +13,7 @@ public class _21 extends BaseSolution {
     private TIntIntHashMap divisorSums;
 
     @Override
-    public Result solve() {
+    public long solve() {
         TIntList amicables = new TIntArrayList();
         divisorSums = new TIntIntHashMap(10000, DEFAULT_LOAD_FACTOR, -1, -1);
         divisorSums.put(1, 0);
@@ -31,7 +30,7 @@ public class _21 extends BaseSolution {
         }
 
         divisorSums = null;
-        return new Result(amicables.sum());
+        return amicables.sum();
     }
 
     int sumDivisors(int n)

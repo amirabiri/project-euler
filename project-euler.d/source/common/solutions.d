@@ -13,46 +13,6 @@ import std.datetime : StopWatch;
 
 
 
-enum SolutionResultType { Integer, Long, String }
-
-struct SolutionResult
-{
-	immutable int                intResult;
-	immutable long               longResult;
-	immutable string             stringResult;
-	immutable SolutionResultType resultType;
-	
-	
-	public this(int result)
-	{
-		intResult  = result;
-		resultType = SolutionResultType.Integer;
-	}
-	
-	public this(long result)
-	{
-		longResult  = result;
-		resultType  = SolutionResultType.Long;
-	}
-	
-	public this(string result)
-	{
-		stringResult = result;
-		resultType   = SolutionResultType.String;
-	}
-	
-	public string toString()
-	{
-		switch (resultType)
-		{
-			case SolutionResultType.Integer: return intResult.to!string;
-			case SolutionResultType.Long:    return longResult.to!string;
-			case SolutionResultType.String:  return stringResult;
-			default:                         return null;
-		}
-	}
-}
-
 class SolutionNotFoundException : Exception
 {
 	public this(string message)
@@ -61,9 +21,9 @@ class SolutionNotFoundException : Exception
 	}
 }
 
-private SolutionResult function()[int] solutions;
+private long function()[int] solutions;
 
-void register_solution(int num, SolutionResult function() func)
+void register_solution(int num, long function() func)
 {
 	solutions[num] = func;
 }
@@ -72,26 +32,27 @@ mixin template solution(int num, alias F)
 {
 	static this()
 	{
-		register_solution(num, () => SolutionResult(F()));
+		register_solution(num, F);
 	}
 }
 
 void run_solution(int num, bool outputTime)
 {
-	SolutionResult function()* func = (num in solutions);
-
 	string numStr = to!string(num);
 
-	if (func is null) {
+	long function()* funcPtr = (num in solutions);
+	if (funcPtr is null) {
 		throw new SolutionNotFoundException("Solution " ~ numStr ~ " not found");
 	}
+	
+	auto func = (*funcPtr);
 	
 	init_solution_data(num);
 
 	StopWatch sw;
 	sw.start;
 	
-	auto result = (*func)();
+	auto result = func();
 	
 	sw.stop;
 	writeln(result);
@@ -102,25 +63,26 @@ void run_solution(int num, bool outputTime)
 
 void benchmark_solution(int num, int run_times)
 {
-	SolutionResult function()* func = (num in solutions);
-
 	string numStr = to!string(num);
 
-	if (func is null) {
+	long function()* funcPtr = (num in solutions);
+	if (funcPtr is null) {
 		throw new SolutionNotFoundException("Solution " ~ numStr ~ " not found");
 	}
 	
+	auto func = (*funcPtr);
+	
 	init_solution_data(num);
 
-	auto lala = () => (*func)();
+	//auto lala = () => (*func)();
 	version (LDC)
 	{
-		auto r = benchmark!(lala)(run_times);
+		auto r = benchmark!(func)(run_times);
 	}
 	else
 	{
 		import std.datetime;
-		auto r = benchmark!(lala)(run_times);
+		auto r = benchmark!(func)(run_times);
 	}
 	
 	writeln(r[0].msecs);

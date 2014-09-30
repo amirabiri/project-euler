@@ -11,7 +11,7 @@ auto number10s_words_map = [null, null, "twenty", "thirty", "forty", "fifty", "s
 
 mixin solution!(17,
 {
-	int sum;
+	long sum;
 	foreach (number; iota(1, 1001)) {
 		foreach (word; number_words(number)) {
 			sum += word.length;

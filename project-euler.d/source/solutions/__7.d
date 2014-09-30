@@ -12,7 +12,7 @@ mixin solution!(7,
     foreach (prime; primes) {
 		idx++;
 		if (idx == 10_001) {
-			return prime;
+			return prime.to!long;
 		}    	
     }
 });

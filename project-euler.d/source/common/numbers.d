@@ -3,12 +3,12 @@ import std.conv;
 import std.math;
 import std.range;
 
-int[] divisors(int n)
+T[] divisors(T)(T n)
 {
-	int[] ret = [1];
+	T[] ret = [1];
 	auto sqr = n.to!real.sqrt.lrint;
 
-	for (int x = 2; x <= sqr; x++) {
+	for (T x = 2; x <= sqr; x++) {
 		if (n % x == 0) {
 			ret ~= x;
 			auto opp = n / x;

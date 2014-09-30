@@ -1,14 +1,13 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 
 public class _26 extends BaseSolution {
 
     @Override
-    public Result solve() {
+    public long solve() {
         int maxD = 0, maxLen = 0;
 
         for (int d = 1; d <= 1000; d++) {
@@ -19,7 +18,7 @@ public class _26 extends BaseSolution {
             }
         }
 
-        return new Result(maxD);
+        return maxD;
     }
 
     private int unitFractionCycleLength(int d) {

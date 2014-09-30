@@ -6,7 +6,7 @@ public abstract class BaseSolution implements Solution {
 
     public void initialize() throws Exception {}
 
-    public abstract Result solve();
+    public abstract long solve();
 
     protected String dataFilename() {
         return getClass().getSimpleName().substring(1) + ".txt";

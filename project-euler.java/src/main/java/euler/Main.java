@@ -6,7 +6,6 @@ import com.beust.jcommander.ParameterException;
 import com.google.common.base.CharMatcher;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import euler.common.Result;
 import euler.common.Solution;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class Main {
     private static JCommander  cmndr;
     private static Injector    injector;
     private static Solution    solution;
-    private static Result      result;
+    private static long        result;
     private static long        time;
 
     public static void main(String[] argv) {

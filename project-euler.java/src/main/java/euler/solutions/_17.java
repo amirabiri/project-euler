@@ -1,7 +1,6 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 import java.util.List;
 
@@ -18,14 +17,14 @@ public class _17 extends BaseSolution {
             "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
 
     @Override
-    public Result solve() {
+    public long solve() {
         int sum = 0;
         for (int number = 1; number <= 1000; number++) {
             for (String word : numberWords(number)) {
                 sum += word.length();
             }
         }
-        return new Result(sum);
+        return sum;
     }
 
     private static List<String> numberWords(int number) {

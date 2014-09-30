@@ -18,7 +18,7 @@ mixin solution!(5,
 		}
 	}
 	
-	int num = 1;
+	long num = 1;
 	foreach (factor, count; superset) {
 		for (int i = 0; i < count; i++) {
 			num *= factor;

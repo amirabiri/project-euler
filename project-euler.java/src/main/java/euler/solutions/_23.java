@@ -1,7 +1,6 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -14,7 +13,7 @@ public class _23 extends BaseSolution {
     boolean[] isAbundants;
 
     @Override
-    public Result solve() {
+    public long solve() {
         findAbundants();
 
         long sum = 0;
@@ -24,7 +23,7 @@ public class _23 extends BaseSolution {
             }
         }
 
-        return new Result(sum);
+        return sum;
     }
 
     private void findAbundants() {

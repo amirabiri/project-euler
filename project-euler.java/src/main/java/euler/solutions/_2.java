@@ -1,11 +1,10 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 public class _2 extends BaseSolution {
     @Override
-    public Result solve() {
+    public long solve() {
         int  a   = 1;
         int  b   = 2;
         long sum = 0;
@@ -19,6 +18,6 @@ public class _2 extends BaseSolution {
             b = tmp;
         }
 
-        return new Result(sum);
+        return sum;
     }
 }

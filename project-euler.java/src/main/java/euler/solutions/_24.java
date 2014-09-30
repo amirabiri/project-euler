@@ -1,16 +1,17 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+
+import static java.lang.Long.valueOf;
 
 public class _24 extends BaseSolution {
 
     private TIntList digits;
 
     @Override
-    public Result solve() {
+    public long solve() {
         digits = new TIntArrayList(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
         int n   = 1_000_000;
         int fac = 362880; // factorial(9)
@@ -30,7 +31,7 @@ public class _24 extends BaseSolution {
 
         ret += digits.get(0);
 
-        return new Result(ret);
+        return valueOf(ret);
     }
 
 

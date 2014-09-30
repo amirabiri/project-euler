@@ -2,7 +2,6 @@ package euler.solutions;
 
 import euler.common.BaseSolution;
 import euler.common.ParseUtils;
-import euler.common.Result;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 
@@ -15,7 +14,7 @@ public abstract class BaseSumPathSolution extends BaseSolution {
     }
 
     @Override
-    public Result solve() {
+    public long solve() {
         int[] bottom = triangle[triangle.length - 1];
         Path[] paths = new Path[bottom.length];
         for (int i = 0; i < bottom.length; i++) {
@@ -31,7 +30,7 @@ public abstract class BaseSumPathSolution extends BaseSolution {
             paths = next_paths;
         }
 
-        return new Result(paths[0].sum);
+        return paths[0].sum;
     }
 
     private static class Path {

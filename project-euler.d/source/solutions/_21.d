@@ -19,7 +19,7 @@ mixin solution!(21,
 		}
 	}
 
-	return amicables.sum;
+	return amicables.sum.to!long;
 });
 
 int[10000] dsums;

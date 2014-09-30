@@ -1,12 +1,11 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 public class _4 extends BaseSolution {
 
     @Override
-    public Result solve() {
+    public long solve() {
         int leftSide = 999;
         int num = makePalindrome(leftSide);
 
@@ -15,7 +14,7 @@ public class _4 extends BaseSolution {
             num = makePalindrome(leftSide);
         }
 
-        return new Result(num);
+        return num;
     }
 
     int makePalindrome(int num) {

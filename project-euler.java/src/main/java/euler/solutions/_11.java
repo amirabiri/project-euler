@@ -1,7 +1,6 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 public class _11 extends BaseSolution {
 
@@ -14,7 +13,7 @@ public class _11 extends BaseSolution {
     }
 
     @Override
-    public Result solve() {
+    public long solve() {
         int max = 0;
 
         for (int y = 0; y < 20; y++) {
@@ -34,7 +33,7 @@ public class _11 extends BaseSolution {
             }
         }
 
-        return new Result(max);
+        return max;
     }
 
     private int check(int x, int y, int xDir, int yDir) {

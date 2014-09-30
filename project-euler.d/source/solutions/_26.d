@@ -6,7 +6,8 @@ import std.range;
 
 mixin solution!(26,
 {
-	int maxD, maxLen;
+	long maxD;
+	int  maxLen;
 	
 	foreach (d; iota(1, 1000)) {
 		auto length = unit_fraction_cycle_length(d);

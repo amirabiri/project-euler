@@ -5,7 +5,7 @@ import euler.common.solutions;
 
 mixin solution!(6,
 {
-	int sum, sumSqrs;
+	long sum, sumSqrs;
 	
 	for (int i = 1; i <= 100; i++) {
 		sum     += i;

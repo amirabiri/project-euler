@@ -5,8 +5,8 @@ import euler.common.solutions;
 
 mixin solution!(4,
 {
-	int leftSide = 999;
-	int num  = make_pali(leftSide);
+	int  leftSide = 999;
+	long num  = make_pali(leftSide);
 	
 	while (!check(num)) {
 		leftSide--;
@@ -24,7 +24,7 @@ int make_pali(int num) {
 	return num * 1000 + c * 100 + b * 10 + a;
 }
 
-bool check(int num) {
+bool check(long num) {
 	if (num % 11 != 0) return false;
 	
 	for (int fac = 999; fac >= 900; fac--) {

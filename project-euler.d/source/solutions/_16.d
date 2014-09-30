@@ -8,7 +8,7 @@ import std.conv;
 mixin solution!(16,
 {
     auto twoPow1000 = (BigInt(2) ^^ 1000).to!string;
-    int sum;
+    long sum;
     foreach (chr; twoPow1000) {
     	sum += chr - 48;
     }

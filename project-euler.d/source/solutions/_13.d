@@ -18,5 +18,5 @@ mixin solution!(13,
 	foreach (number; numbers) {
 		sum += number;
 	}
-	return sum.to!string[0..10];
+	return sum.to!string[0..10].to!long;
 });

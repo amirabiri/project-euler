@@ -1,7 +1,6 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 import java.time.LocalDate;
 
@@ -10,7 +9,7 @@ import static java.time.DayOfWeek.SUNDAY;
 public class _19 extends BaseSolution
 {
     @Override
-    public Result solve() {
+    public long solve() {
         int sundays_first = 0;
         for (int year = 1901; year <= 2000; year++) {
             for (int month = 1; month <= 12; month++) {
@@ -19,6 +18,6 @@ public class _19 extends BaseSolution
                 }
             }
         }
-        return new Result(sundays_first);
+        return sundays_first;
     }
 }

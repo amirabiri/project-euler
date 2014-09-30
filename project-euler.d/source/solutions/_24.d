@@ -24,7 +24,7 @@ mixin solution!(24,
 	
 	ret ~= digits[0].to!string;
 	
-	return ret;
+	return ret.to!long;
 });
 
 int nth_digit(int idx)

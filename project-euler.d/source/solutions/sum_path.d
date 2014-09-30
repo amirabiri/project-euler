@@ -4,7 +4,7 @@ import euler.common.data;
 
 
 
-int solve_sum_path(int[][] triangle)
+long solve_sum_path(int[][] triangle)
 {
 	auto paths = triangle.back.map!Path.array;
 		
@@ -19,7 +19,6 @@ int solve_sum_path(int[][] triangle)
 	
 	return paths[0].sum;
 }
-
 
 struct Path
 {

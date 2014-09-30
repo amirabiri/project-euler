@@ -9,7 +9,7 @@ with a minimal "framework" and set of rules such that:
  * Solutions can be run in various ways - different subsets of solutions or languages, with timing or benchmarking, etc.
 
 I have only recently discovered Project Euler myself, and this project is not meant to be a "spoiler" for anyone else,
-nor do I want others to spoil the fun for me of tackling problems I have not yet solved myself. I do however, welcome
+nor do I want others to spoil the fun for me of tackling problems I have not yet solved on my own. I do however, welcome
 submissions for improving the solutions in either a specific language or all of them.
 
 Even though comparing the performance of various languages is a key interest here, bare in mind these are not

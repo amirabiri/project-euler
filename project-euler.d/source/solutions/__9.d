@@ -10,7 +10,7 @@ mixin solution!(9,
     	foreach (b; iota(a + 1, 1000 - a)) {
     		auto c = 1000 - a - b;
             if (a * a + b * b == c * c) {
-                return a * b *c;
+                return (a * b *c).to!long;
             }
     	}
     }

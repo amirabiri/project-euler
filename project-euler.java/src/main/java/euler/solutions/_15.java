@@ -1,11 +1,10 @@
 package euler.solutions;
 
 import euler.common.BaseSolution;
-import euler.common.Result;
 
 public class _15 extends BaseSolution {
     @Override
-    public Result solve() {
+    public long solve() {
         long[][] grid = new long[21][21];
 
         for (int i = 0; i <= 20; i++) {
@@ -19,6 +18,6 @@ public class _15 extends BaseSolution {
             }
         }
 
-        return new Result(grid[20][20]);
+        return grid[20][20];
     }
 }
